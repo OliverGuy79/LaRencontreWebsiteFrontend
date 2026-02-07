@@ -1,0 +1,38 @@
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Église La Rencontre</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<!-- index.html - Structure unique -->
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="#/">Accueil</a></li>
+            <li><a href="#/actu">Actu</a></li>
+            <li><a href="#/eglise">Église</a></li>
+            <li><a href="#/elrtv">ÉLR TV</a></li>
+            <li><a href="#/nextgen">Next Gen</a></li>
+            <li><a href="#/boutique">Boutique</a></li>
+            <li><a href="#/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Player persistant (jamais détruit) -->
+    <div id="player-container">
+        <audio id="audio-player"></audio>
+        <video id="video-player"></video>
+    </div>
+
+    <!-- Contenu dynamique (change selon la route) -->
+    <main id="content">
+        <!-- Chargé dynamiquement -->
+    </main>
+
+    <script type="module" src="/js/router.js"></script>
+</body>
+
+</html>
