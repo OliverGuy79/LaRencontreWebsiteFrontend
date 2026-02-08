@@ -2,20 +2,28 @@
 // Routeur minimaliste SPA
 // --------------------------------------------------
 
-// Import des pages
+// Import des pages (Integration Base + Custom Additions)
 import { accueil } from './pages/accueil.js';
-import { actu } from './pages/actu.js';
-import { eglise } from './pages/eglise.js';
+import { eglise } from './pages/eglise.js'; // Base
 import { elrtv } from './pages/elrtv.js';
-import { nextgen } from './pages/nextgen.js';
-import { boutique } from './pages/boutique.js';
+import { nextgen } from './pages/nextgen.js'; // Base
 import { contact } from './pages/contact.js';
+
+// Custom Additions (Restored)
+import { actu } from './pages/actu.js';
+import { kidz } from './pages/kidz.js';
+import { teenz } from './pages/teenz.js';
+import { vision } from './pages/vision.js';
+import { equipe } from './pages/equipe.js';
+import { homeGroups } from './pages/home-groups.js';
+import { services } from './pages/services.js';
+import { boutique } from './pages/boutique.js';
 
 // Conteneur principal
 const contentElement = document.getElementById('content');
 
 // Fonction pour charger une page
-function loadPage(pageName) {
+async function loadPage(pageName) {
     console.log(`Chargement de la page: ${pageName}`);
 
     const pages = {
@@ -24,13 +32,31 @@ function loadPage(pageName) {
         eglise,
         elrtv,
         nextgen,
+        kidz,
+        teenz,
+        vision,
+        equipe,
+        homeGroups,
+        services,
         boutique,
         contact
     };
 
     const pageContent = pages[pageName];
     if (pageContent) {
-        contentElement.innerHTML = pageContent();
+        try {
+            // Support both sync and async pages
+            const content = await pageContent();
+            contentElement.innerHTML = content;
+        } catch (error) {
+            console.error("Erreur lors du chargement de la page:", error);
+            contentElement.innerHTML = `
+                <div class="mx-auto max-w-4xl px-4 py-20 text-center">
+                    <h1 class="text-3xl font-bold text-punch">Oups ! Une erreur est survenue.</h1>
+                    <p class="mt-4 text-black/60">Impossible de charger le contenu. Veuillez réessayer plus tard.</p>
+                </div>
+            `;
+        }
     } else {
         contentElement.innerHTML = '<h1>Page non trouvée</h1>';
     }
@@ -39,16 +65,18 @@ function loadPage(pageName) {
 // Définit les routes (correspondant aux liens dans index.html)
 const routes = {
     '/': () => loadPage('accueil'),
-    '/actu': () => {
-        loadPage('accueil');
-        setTimeout(() => {
-            const section = document.getElementById('actu-section');
-            if (section) section.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+    '/actu': async () => {
+        await loadPage('actu');
     },
     '/eglise': () => loadPage('eglise'),
     '/elrtv': () => loadPage('elrtv'),
     '/nextgen': () => loadPage('nextgen'),
+    '/kidz': () => loadPage('kidz'),
+    '/teenz': () => loadPage('teenz'),
+    '/vision': () => loadPage('vision'),
+    '/equipe': () => loadPage('equipe'),
+    '/homes': () => loadPage('homeGroups'),
+    '/services': () => loadPage('services'),
     '/boutique': () => loadPage('boutique'),
     '/contact': () => loadPage('contact'),
 };

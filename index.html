@@ -7,19 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/style.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                        serif: ['Spectral', 'ui-serif', 'Georgia']
+                    },
                     colors: {
                         ink: '#0b0b0f',
                         paper: '#ffffff',
                         haze: '#f5f6fa',
                         punch: '#7c3aed',
                         glow: '#a3ff12',
+                        rule: 'rgba(11,11,15,.12)',
                     },
                     boxShadow: {
                         soft: '0 12px 30px rgba(0,0,0,.12)'
@@ -36,20 +43,63 @@
     <header class="sticky top-0 z-50 bg-paper/85 backdrop-blur border-b border-black/5">
         <div class="mx-auto max-w-[95%] px-4">
             <div class="flex h-16 items-center justify-between">
-                <a href="#/" class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-2xl bg-ink text-paper grid place-items-center font-black">R</div>
-                    <div class="leading-tight">
-                        <div class="font-extrabold tracking-tight">LA RENCONTRE</div>
-                        <div class="text-xs text-black/60 -mt-0.5">Église</div>
-                    </div>
+                <a href="#/" class="flex items-center">
+                    <img src="/assets/images/lr-logo-vertical-black.png" alt="Église La Rencontre" class="h-10">
                 </a>
 
                 <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
                     <a class="hover:text-punch" href="#/">Accueil</a>
                     <a class="hover:text-punch" href="#/actu">Actu</a>
-                    <a class="hover:text-punch" href="#/eglise">Église</a>
+
+                    <!-- Eglise Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-punch outline-none py-2">
+                            Église
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 top-full pt-2 w-48 hidden group-hover:block transition-opacity">
+                            <div class="bg-paper rounded-lg shadow-soft border border-black/5 overflow-hidden">
+                                <a href="#/vision"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors border-b border-black/5">Notre
+                                    vision</a>
+                                <a href="#/equipe"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors border-b border-black/5">Equipe
+                                    pastorale</a>
+                                <a href="#/homes"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors border-b border-black/5">Les
+                                    Home</a>
+                                <a href="#/services"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors">Services</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <a class="hover:text-punch" href="#/elrtv">ELR TV</a>
-                    <a class="hover:text-punch" href="#/nextgen">Next Gen</a>
+
+                    <!-- Next Gen Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-punch outline-none py-2">
+                            Next Gen
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="absolute left-0 top-full pt-2 w-40 hidden group-hover:block transition-opacity">
+                            <div class="bg-paper rounded-lg shadow-soft border border-black/5 overflow-hidden">
+                                <a href="#/kidz"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors border-b border-black/5">Kidz</a>
+                                <a href="#/teenz"
+                                    class="block px-4 py-3 hover:bg-haze hover:text-punch transition-colors">Teenz</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <a class="hover:text-punch" href="#/boutique">Boutique</a>
                     <a class="hover:text-punch" href="#/contact">Contact</a>
                 </nav>
