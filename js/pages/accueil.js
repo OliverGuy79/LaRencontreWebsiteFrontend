@@ -125,7 +125,7 @@ export async function accueil() {
                 <div class="max-w-3xl">
                     <p class="inline-flex items-center gap-2 rounded-full bg-ink text-paper px-4 py-1.5 text-xs font-bold tracking-wide">
                         <span class="h-2 w-2 rounded-full bg-glow"></span>
-                        DIMANCHE • 10:00
+                        DIMANCHE • 09:00
                     </p>
 
                     <h1 class="mt-6 text-4xl md:text-6xl font-black tracking-tight leading-[1.02] text-paper">
@@ -238,7 +238,7 @@ export async function accueil() {
         <section id="actu-section" class="mx-auto max-w-[95%] px-4 py-12 md:py-16">
             <div class="flex items-end justify-between gap-6">
                 <div>
-                    <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">News</p>
+                    <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">Actualités</p>
                     <h2 class="mt-2 text-2xl md:text-3xl font-black">Dernières actualités</h2>
                     <p class="mt-2 text-black/70">Restez informé de la vie de l'église</p>
                 </div>
