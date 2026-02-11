@@ -44,12 +44,16 @@ async function loadPage(pageName) {
         article
     };
 
-    const pageContent = pages[pageName];
-    if (pageContent) {
+    const pageFunction = pages[pageName];
+
+    if (pageFunction) {
         try {
-            // Support both sync and async pages
-            const content = await pageContent();
-            contentElement.innerHTML = content;
+            // Afficher un loader si le chargement prend du temps (optionnel, à styliser)
+            contentElement.innerHTML = '<div class="flex h-[50vh] items-center justify-center"><div class="h-10 w-10 animate-spin rounded-full border-4 border-ink border-t-transparent"></div></div>';
+
+            // Exécuter la fonction de page (peut être async)
+            const html = await pageFunction();
+            contentElement.innerHTML = html;
         } catch (error) {
             console.error("Erreur lors du chargement de la page:", error);
             contentElement.innerHTML = `
@@ -68,7 +72,12 @@ async function loadPage(pageName) {
 const routes = {
     '/': () => loadPage('accueil'),
     '/actu': async () => {
-        await loadPage('actu');
+        await loadPage('accueil');
+        // Un petit délai supplémentaire pour laisser le temps au navigateur de rendre le DOM
+        setTimeout(() => {
+            const section = document.getElementById('actu-section');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
     },
     '/eglise': () => loadPage('eglise'),
     '/elrtv': () => loadPage('elrtv'),

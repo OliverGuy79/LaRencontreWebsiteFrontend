@@ -16,38 +16,55 @@ export async function accueil() {
         image: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=800&q=80"
     };
 
-    const nextEvents = [
-        {
-            date: "Dim 9 Fév • 10:00",
-            title: "Culte dominical",
-            description: "Rejoignez-nous pour un temps de louange et d'enseignement.",
-            color: "bg-punch"
-        },
-        {
-            date: "Sam 15 Fév • 18:00",
-            title: "Soirée Next Gen",
-            description: "Le rendez-vous mensuel des jeunes de l'église.",
-            color: "bg-glow"
-        },
-        {
-            date: "Mer 19 Fév • 19:30",
-            title: "Soirée de prière",
-            description: "Un moment pour chercher Dieu ensemble.",
-            color: "bg-punch"
-        }
-    ];
-
     // Récupération des données API
     let homeGroups = [];
+    let nextEvents = [];
+
     try {
-        const homeGroupsResponse = await api.getHomeGroups();
+        const [homeGroupsResponse, eventsResponse] = await Promise.all([
+            api.getHomeGroups(),
+            api.getUpcomingEvents(5) // Récupérer les 5 prochains événements
+        ]);
+
         if (homeGroupsResponse && homeGroupsResponse.home_groups) {
-            console.log("homeGroups (nb)", homeGroupsResponse.home_groups.length);
-            console.log("homeGroups", homeGroupsResponse.home_groups);
-            homeGroups = homeGroupsResponse.home_groups.slice(0, 9); // Prendre les 9 premiers
+            homeGroups = homeGroupsResponse.home_groups.slice(0, 9);
+        }
+
+        if (eventsResponse) {
+            // L'API retourne directement un tableau ou un objet { events: [] } ?
+            // Vérifions la structure habituelle. api.service.js retourne response.json()
+            // Si l'endpoint est /api/events/upcoming, il retourne probablement une liste.
+            // Adaptons au cas où.
+            const eventsData = Array.isArray(eventsResponse) ? eventsResponse : (eventsResponse.events || []);
+
+            nextEvents = eventsData.map(e => {
+                // Formatage de la date
+                console.log("date", e.start_date);
+                const dateObj = new Date(e.start_date);
+                console.log("dateObj", dateObj);
+                const dateStr = dateObj.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+                const timeStr = dateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+                return {
+                    date: `${dateStr} • ${timeStr}`,
+                    title: e.title,
+                    description: e.description || "Aucune description",
+                    color: "bg-punch" // Couleur par défaut ou logique basée sur la catégorie si disponible
+                };
+            });
         }
     } catch (error) {
-        console.error("Erreur chargement home groups:", error);
+        console.error("Erreur chargement données accueil:", error);
+    }
+
+    // Si pas d'événements (erreur ou vide), on peut laisser vide ou mettre un message
+    if (nextEvents.length === 0) {
+        nextEvents.push({
+            date: "",
+            title: "Aucun événement à venir",
+            description: "Consultez notre agenda complet.",
+            color: "bg-gray-400"
+        });
     }
 
     // Construction HTML dynamique des événements
@@ -57,7 +74,7 @@ export async function accueil() {
             <div class="p-5 flex-1">
                 <p class="text-xs font-black tracking-widest text-black/50 uppercase">${event.date}</p>
                 <h3 class="mt-1 text-lg font-black">${event.title}</h3>
-                <p class="mt-1 text-black/70 text-sm">${event.description}</p>
+                <p class="mt-1 text-black/70 text-sm line-clamp-2">${event.description}</p>
             </div>
         </article>
     `).join('');
@@ -108,7 +125,7 @@ export async function accueil() {
                 <div class="max-w-3xl">
                     <p class="inline-flex items-center gap-2 rounded-full bg-ink text-paper px-4 py-1.5 text-xs font-bold tracking-wide">
                         <span class="h-2 w-2 rounded-full bg-glow"></span>
-                        DIMANCHE • 10:00
+                        DIMANCHE • 09:00
                     </p>
 
                     <h1 class="mt-6 text-4xl md:text-6xl font-black tracking-tight leading-[1.02] text-paper">
@@ -221,7 +238,7 @@ export async function accueil() {
         <section id="actu-section" class="mx-auto max-w-[95%] px-4 py-12 md:py-16">
             <div class="flex items-end justify-between gap-6">
                 <div>
-                    <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">News</p>
+                    <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">Actualités</p>
                     <h2 class="mt-2 text-2xl md:text-3xl font-black">Dernières actualités</h2>
                     <p class="mt-2 text-black/70">Restez informé de la vie de l'église</p>
                 </div>
