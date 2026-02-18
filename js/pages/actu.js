@@ -104,7 +104,7 @@ export async function actu() {
                 <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div class="text-center md:text-left">
                         <div class="font-black tracking-tight text-4xl md:text-6xl leading-none">
-                            LE JOURNAL
+                            ELR ACTU
                         </div>
                         <div class="mt-2 text-sm text-black/70">
                             Culture • Musique • Société — une mise en page “magazine”

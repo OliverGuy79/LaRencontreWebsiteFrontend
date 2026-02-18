@@ -61,8 +61,8 @@ export class ApiService {
     }
 
     // --- ARTICLES (BLOG/ACTUALITÉS) ---
-    async getArticles(category = null, limit = null, preview = false) {
-        return this.get('/api/articles', { category, limit, preview });
+    async getArticles(category = null, limit = null, preview = false, tag = null) {
+        return this.get('/api/articles', { category, limit, preview, tag });
     }
 
     async getArticle(slug, preview = false) {

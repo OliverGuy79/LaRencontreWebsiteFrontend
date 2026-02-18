@@ -1,4 +1,47 @@
-export function teenz() {
+import { api } from '../services/api.service.js';
+
+export async function teenz() {
+    // Récupération des articles filtrés par tag "teenz"
+    let articles = [];
+    try {
+        const response = await api.getArticles(null, 3, false, 'teenz');
+        if (response && response.articles) {
+            articles = response.articles;
+        }
+    } catch (error) {
+        console.error("Erreur chargement articles teenz:", error);
+    }
+
+    // Construction HTML dynamique des articles
+    const articlesHtml = articles.length > 0
+        ? articles.map(article => {
+            const imageUrl = article.image || 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=600&q=80';
+            return `
+            <article class="rounded-3xl overflow-hidden bg-paper shadow-soft border border-black/5 hover:shadow-lg transition">
+                <div class="aspect-[16/10] overflow-hidden">
+                    <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <p class="text-xs font-bold text-punch uppercase">${article.category || 'Teenz'}</p>
+                    <h3 class="mt-2 text-lg font-black">${article.title}</h3>
+                    <p class="mt-2 text-black/60 text-sm line-clamp-2">${article.excerpt || ''}</p>
+                    <a href="#/article?slug=${article.slug}" class="mt-4 inline-flex text-sm font-bold text-punch hover:underline">
+                        Lire la suite →
+                    </a>
+                </div>
+            </article>
+        `}).join('')
+        : `
+            <article class="rounded-3xl overflow-hidden bg-paper shadow-soft border border-black/5 hover:shadow-lg transition">
+                <div class="aspect-[16/10] bg-gradient-to-br from-pink-400/20 to-purple-400/10"></div>
+                <div class="p-6">
+                    <p class="text-xs font-bold text-punch uppercase">À venir</p>
+                    <h3 class="mt-2 text-lg font-black">Restez connectés</h3>
+                    <p class="mt-2 text-black/60 text-sm line-clamp-2">De nouvelles actualités Teenz arrivent bientôt...</p>
+                </div>
+            </article>
+        `.repeat(3);
+
     return `
     <div class="bg-paper text-ink font-sans">
         <!-- HERO -->
@@ -160,6 +203,23 @@ export function teenz() {
                         Le moment le plus important : on se divise en petits groupes pour parler vrai et prier.
                     </p>
                 </article>
+            </div>
+        </section>
+
+        <!-- ACTUALITÉS TEENZ -->
+        <section id="actu-teenz" class="bg-haze">
+            <div class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+                <div class="flex items-end justify-between gap-6">
+                    <div>
+                        <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">Actualités</p>
+                        <h2 class="mt-2 text-2xl md:text-3xl font-black">Dernières news Teenz</h2>
+                        <p class="mt-2 text-black/70">Reste au courant de tout ce qui bouge chez TC Teenz</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid gap-6 md:grid-cols-3">
+                    ${articlesHtml}
+                </div>
             </div>
         </section>
 

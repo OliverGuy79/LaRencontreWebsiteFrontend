@@ -46,7 +46,7 @@ export async function article() {
         <div class="min-h-screen bg-paper flex flex-col items-center justify-center p-4">
             <h1 class="text-3xl font-black text-punch mb-4">Oups !</h1>
             <p class="text-lg text-black/70 mb-8">${error || "Article introuvable."}</p>
-            <a href="#/actu" class="rounded-full px-6 py-3 font-bold bg-ink text-paper hover:opacity-90 transition-opacity">
+            <a href="#/journal" class="rounded-full px-6 py-3 font-bold bg-ink text-paper hover:opacity-90 transition-opacity">
                 Retour au journal
             </a>
         </div>`;
@@ -54,7 +54,7 @@ export async function article() {
 
   // --- RENDU DE L'ARTICLE ---
   const date = new Date(article.published_at || article.created_at || Date.now()).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  const image = article.image || 'https://images.unsplash.com/photo-1493612276216-9c782cb70dad?auto=format&fit=crop&q=80&w=1000';
+  const image = article.image || 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1000&q=80';
 
   // Préparer le contenu HTML en échappant les backticks
   const rawContent = article.content_html || article.content || '<p>Contenu non disponible.</p>';
@@ -67,37 +67,17 @@ export async function article() {
       <header class="border-b border-rule">
         <div class="mx-auto max-w-6xl px-4 py-6">
           <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
-            <a href="#/actu" class="text-center md:text-left group">
+            <a href="#/journal" class="text-center md:text-left group">
               <div class="font-black tracking-tight text-4xl md:text-5xl leading-none group-hover:text-punch transition-colors">
-                LE JOURNAL
+                ELR ACTU
               </div>
               <div class="mt-1 text-sm text-black/70">
-                Une mise en page magazine
+                L'actualité de l'Église La Rencontre
               </div>
             </a>
 
-            <div class="flex items-center justify-center md:justify-end gap-2">
-              <a class="rounded-full px-4 py-2 text-sm font-bold border border-rule hover:border-black/30 transition-colors" href="#/actu">
-                Retour
-              </a>
-              <a class="rounded-full px-4 py-2 text-sm font-bold bg-ink text-paper hover:opacity-90 transition-opacity" href="#/contact">
-                S’abonner
-              </a>
-            </div>
           </div>
         </div>
-
-        <nav class="border-t border-rule">
-          <div class="mx-auto max-w-6xl px-4">
-            <div class="flex gap-6 overflow-x-auto py-3 text-sm font-semibold whitespace-nowrap">
-              <a class="hover:text-punch transition-colors" href="#/actu">Actualités</a>
-              <a class="hover:text-punch transition-colors" href="#/actu">Critiques</a>
-              <a class="hover:text-punch transition-colors" href="#/actu">Interviews</a>
-              <a class="hover:text-punch transition-colors" href="#/actu">Essais</a>
-              <a class="hover:text-punch transition-colors" href="#/actu">Guides</a>
-            </div>
-          </div>
-        </nav>
       </header>
 
       <!-- Article layout -->
@@ -153,7 +133,7 @@ export async function article() {
               <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs font-black tracking-widest uppercase text-black/50">Tags :</span>
                 ${(article.tags || 'Journal,Église').split(',').map(tag => `
-                    <a href="#/actu" class="text-xs font-bold px-3 py-1 rounded-full border border-rule hover:border-black/30 hover:bg-haze transition-colors">
+                    <a href="#/journal" class="text-xs font-bold px-3 py-1 rounded-full border border-rule hover:border-black/30 hover:bg-haze transition-colors">
                       ${tag.trim()}
                     </a>
                 `).join('')}
@@ -163,7 +143,7 @@ export async function article() {
                 <button onclick="navigator.share({title: '${article.title}', url: window.location.href})" class="inline-flex justify-center rounded-full px-6 py-3 font-bold bg-ink text-paper hover:opacity-90 transition-opacity">
                   Partager l'article
                 </button>
-                <a href="#/actu" class="inline-flex justify-center rounded-full px-6 py-3 font-bold border border-rule hover:border-black/30 transition-colors">
+                <a href="#/journal" class="inline-flex justify-center rounded-full px-6 py-3 font-bold border border-rule hover:border-black/30 transition-colors">
                   Lire plus d'essais
                 </a>
               </div>

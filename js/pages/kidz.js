@@ -1,15 +1,49 @@
-export function kidz() {
+import { api } from '../services/api.service.js';
+
+export async function kidz() {
+    // Récupération des articles filtrés par tag "kidz"
+    let articles = [];
+    try {
+        const response = await api.getArticles(null, 3, false, 'kidz');
+        if (response && response.articles) {
+            articles = response.articles;
+        }
+    } catch (error) {
+        console.error("Erreur chargement articles kidz:", error);
+    }
+
+    // Construction HTML dynamique des articles
+    const articlesHtml = articles.length > 0
+        ? articles.map(article => {
+            const imageUrl = article.image || 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=600&q=80';
+            return `
+            <article class="rounded-3xl overflow-hidden bg-paper shadow-soft border border-black/5 hover:shadow-lg transition">
+                <div class="aspect-[16/10] overflow-hidden">
+                    <img src="${imageUrl}" alt="${article.title}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+                </div>
+                <div class="p-6">
+                    <p class="text-xs font-bold text-punch uppercase">${article.category || 'Kidz'}</p>
+                    <h3 class="mt-2 text-lg font-black">${article.title}</h3>
+                    <p class="mt-2 text-black/60 text-sm line-clamp-2">${article.excerpt || ''}</p>
+                    <a href="#/article?slug=${article.slug}" class="mt-4 inline-flex text-sm font-bold text-punch hover:underline">
+                        Lire la suite →
+                    </a>
+                </div>
+            </article>
+        `}).join('')
+        : `
+            <article class="rounded-3xl overflow-hidden bg-paper shadow-soft border border-black/5 hover:shadow-lg transition">
+                <div class="aspect-[16/10] bg-gradient-to-br from-purple-400/20 to-green-400/10"></div>
+                <div class="p-6">
+                    <p class="text-xs font-bold text-punch uppercase">À venir</p>
+                    <h3 class="mt-2 text-lg font-black">Restez connectés</h3>
+                    <p class="mt-2 text-black/60 text-sm line-clamp-2">De nouvelles actualités Kidz arrivent bientôt...</p>
+                </div>
+            </article>
+        `.repeat(3);
+
     return `
     <div class="bg-paper text-ink font-sans">
-        <!-- Header specific to Kidz page (optional, or rely on main header) -->
-        <!-- Since existing layout has a main header, we might want to keep it or override it. 
-             The provided HTML had its own header. I will include it as part of the page content 
-             but maybe styling it to fit within the main styling if needed.
-             However, the prompt says "integrate it", implying it should likely be the page content.
-             The provided HTML has a header with "TC KIDZ". 
-             I will render the entire functionality within the main content area, 
-             excluding the <html>, <head>, and <body> tags which are handled by index.html.
-        -->
 
         <!-- HERO -->
         <section class="relative overflow-hidden">
@@ -196,6 +230,23 @@ export function kidz() {
                     href="#">
                     Formulaire “Je suis nouveau”
                 </a>
+            </div>
+        </section>
+
+        <!-- ACTUALITÉS KIDZ -->
+        <section id="actu-kidz" class="bg-haze">
+            <div class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+                <div class="flex items-end justify-between gap-6">
+                    <div>
+                        <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">Actualités</p>
+                        <h2 class="mt-2 text-2xl md:text-3xl font-black">Dernières news Kidz</h2>
+                        <p class="mt-2 text-black/70">Restez informé de tout ce qui se passe chez TC Kidz</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid gap-6 md:grid-cols-3">
+                    ${articlesHtml}
+                </div>
             </div>
         </section>
 

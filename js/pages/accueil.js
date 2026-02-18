@@ -16,7 +16,7 @@ export async function accueil() {
     try {
         const [homeGroupsResponse, eventsResponse, playlistResponse, articlesResponse] = await Promise.all([
             api.getHomeGroups(),
-            api.getUpcomingEvents(5),
+            api.getUpcomingEvents(6),
             api.getYoutubePlaylistItems(YOUTUBE_PLAYLIST_ID).catch(() => null),
             api.getArticles(null, 3).catch(() => null)
         ]);
@@ -54,9 +54,13 @@ export async function accueil() {
                 const timeStr = dateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
                 return {
+                    id: e.id,
+                    slug: e.slug,
+                    link: e.link,
                     date: `${dateStr} • ${timeStr}`,
                     title: e.title,
                     description: e.description || "Aucune description",
+                    location: e.location,
                     color: "bg-punch" // Couleur par défaut ou logique basée sur la catégorie si disponible
                 };
             });
@@ -89,11 +93,11 @@ export async function accueil() {
                 <h3 class="mt-2 text-xl font-black">${event.title}</h3>
                 <p class="mt-2 text-black/70 text-sm line-clamp-2">${event.description}</p>
                 ${event.location ? `<p class="mt-2 text-black/50 text-xs"><span class="font-bold">Lieu:</span> ${event.location}</p>` : ''}
-                <div class="mt-5">
-                    <a class="inline-flex rounded-full px-5 py-2.5 font-bold bg-ink text-paper hover:opacity-90" href="#/actu">
+                ${event.link ? `<div class="mt-5">
+                    <a class="inline-flex rounded-full px-5 py-2.5 font-bold bg-ink text-paper hover:opacity-90" href="#/event?slug=${event.slug || event.id}">
                         Détails
                     </a>
-                </div>
+                </div>` : ''}
             </div>
         </article>
     `).join('');
@@ -133,7 +137,7 @@ export async function accueil() {
                     <p class="text-xs font-bold text-punch uppercase">À venir</p>
                     <h3 class="mt-2 text-lg font-black">Restez connectés</h3>
                     <p class="mt-2 text-black/60 text-sm line-clamp-2">De nouvelles actualités arrivent bientôt...</p>
-                    <a href="#/actu" class="mt-4 inline-flex text-sm font-bold text-punch hover:underline">
+                    <a href="#/journal" class="mt-4 inline-flex text-sm font-bold text-punch hover:underline">
                         Voir toutes les actus →
                     </a>
                 </div>
@@ -276,7 +280,7 @@ export async function accueil() {
 
         <!-- PROCHAINS ÉVÉNEMENTS -->
     <section id="events" class="bg-haze border-y border-black/5">
-        <div class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+        <div class="mx-auto max-w-[95%] px-4 py-12 md:py-16">
             <div class="flex items-end justify-between gap-6">
                 <div>
                     <p class="text-xs font-extrabold tracking-widest text-black/50 uppercase">The latest</p>
@@ -309,7 +313,7 @@ export async function accueil() {
                     <h2 class="mt-2 text-2xl md:text-3xl font-black">Dernières actualités</h2>
                     <p class="mt-2 text-black/70">Restez informé de la vie de l'église</p>
                 </div>
-                <a class="hidden md:inline-flex rounded-full px-5 py-2 font-bold border border-black/10 hover:border-black/30" href="#/actu">
+                <a class="hidden md:inline-flex rounded-full px-5 py-2 font-bold border border-black/10 hover:border-black/30" href="#/journal">
                     Voir toutes les actus
                 </a>
             </div>
@@ -319,7 +323,7 @@ export async function accueil() {
             </div>
 
             <div class="mt-8 md:hidden">
-                <a class="inline-flex w-full justify-center rounded-full px-5 py-3 font-bold border border-black/10 hover:border-black/30" href="#/actu">
+                <a class="inline-flex w-full justify-center rounded-full px-5 py-3 font-bold border border-black/10 hover:border-black/30" href="#/journal">
                     Voir toutes les actus
                 </a>
             </div>

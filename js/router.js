@@ -7,6 +7,8 @@ import { accueil } from './pages/accueil.js';
 import { elrtv } from './pages/elrtv.js';
 import { contact } from './pages/contact.js';
 import { article } from './pages/article.js';
+import { journal } from './pages/journal.js';
+import { event } from './pages/event.js';
 
 // Custom Additions (Restored)
 import { actu } from './pages/actu.js';
@@ -28,6 +30,7 @@ async function loadPage(pageName) {
     const pages = {
         accueil,
         actu,
+        journal,
         elrtv,
         kidz,
         teenz,
@@ -37,7 +40,8 @@ async function loadPage(pageName) {
         services,
         boutique,
         contact,
-        article
+        article,
+        event
     };
 
     const pageFunction = pages[pageName];
@@ -75,6 +79,7 @@ const routes = {
             if (section) section.scrollIntoView({ behavior: 'smooth' });
         }, 50);
     },
+    '/journal': () => loadPage('journal'),
     '/elrtv': () => loadPage('elrtv'),
     '/kidz': () => loadPage('kidz'),
     '/teenz': () => loadPage('teenz'),
@@ -85,6 +90,7 @@ const routes = {
     '/boutique': () => loadPage('boutique'),
     '/contact': () => loadPage('contact'),
     '/article': () => loadPage('article'),
+    '/event': () => loadPage('event'),
 };
 
 // Chargement initial au démarrage
